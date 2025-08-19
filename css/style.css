@@ -145,4 +145,10 @@ nav {
   gap: var(--space-2);
   margin-top: var(--space-3);
 }
+
+#goodHabitsGroup,
+#badHabitsGroup {
+	display: none;
+}
+
 /* TODO: Add days of the week */
