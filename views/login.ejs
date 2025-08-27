@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/png" href="/images/honeycomb.png">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <%- include('partials/nav') %>
+
+    <main class="container" aria-labelledby="login-heading">
+      <h1 id="login-heading">Login</h1>
+
+      <% if (user) { %>
+        <div class="alert" role="status">
+          You are already logged in as <strong><%= user.username %></strong>.
+          <a href="/">Go to Home</a> or <a href="/logout">Log out</a> to sign in as a different user.
+        </div>
+      <% } else { %>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-error" role="alert"><%= error %></div>
+        <% } %>
+
+        <form action="/login" method="POST" class="form" autocomplete="off" novalidate>
+          <label for="username">Username</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            required
+            autocomplete="username"
+            placeholder="Enter your username"
+          />
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your password"
+          />
+
+          <button type="submit">Sign in</button>
+
+        </form>
+
+        <p class="muted" style="margin-top:0.75rem;">
+          Don't have an account? <a href="/register">Register</a>.
+          <span style="display:inline-block;margin-left:0.6rem;color:var(--muted);">Forgot password coming soon</span>
+        </p>
+
+      <% } %>
+
+    </main>
+
+  </body>
+
+</html>

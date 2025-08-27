@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/png" href="/images/honeycomb.png">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style>
+      .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+      .admin-table th, .admin-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eee; text-align: left; }
+      .admin-table th { font-weight: 700; color: #333; }
+      .points-input { width: 6.5rem; padding: 0.35rem; border-radius: 6px; border:1px solid #ddd; }
+      .small-btn { padding: 0.4rem 0.6rem; border-radius:6px; cursor:pointer; border:0; background:#E6B800; color:#111; font-weight:600; }
+      .muted { color: #6b6b6b; font-size:0.95rem; }
+      form.inline { display:inline; margin:0; }
+    </style>
+    
+  </head>
+
+  <body>
+
+    <%- include('../partials/nav') %>
+
+    <main class="container">
+      <h1>Admin Panel</h1>
+
+      <p class="muted">General Admin Panel. <a href="https://www.w3schools.com">Habit Panel</a>  |  <a href="Moderation Panel">Moderation Panel</a></p>
+
+      <% if (!users || users.length === 0) { %>
+        <p>No users found.</p>
+      <% } else { %>
+
+        <table class="admin-table" role="table" aria-label="Users">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Points</th>
+              <th>Profile</th>
+              <th>Admin</th>
+              <th>Promote</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% let totalPoints = 0; %>
+            <% users.forEach(u => { %>
+              <tr>
+                <td><%= u.username %></td>
+                <td><%= u.email %></td>
+
+                <td>
+                  <form class="inline" action="/admin/update-points/<%= u._id %>" method="POST">
+                    <input class="points-input" type="number" name="points" value="<%= u.points || 0 %>" min="0" />
+                    <button class="small-btn" type="submit">Save</button>
+                  </form>
+                </td>
+
+                <td>
+                  <a class="small-btn" href="/profile/<%= u._id %>">View</a>
+                </td>
+
+                <td><%= u.isAdmin ? 'Yes' : 'No' %></td>
+
+                <td>
+                  <form class="inline" action="/admin/toggle-admin/<%= u._id %>" method="POST" onsubmit="return confirm('Toggle admin status for <%= u.username %>?');">
+                    <button class="small-btn" type="submit"><%= u.isAdmin ? 'Remove Admin' : 'Make Admin' %></button>
+                  </form>
+                </td>
+
+              </tr>
+
+            <% }) %>
+
+          </tbody>
+
+        </table>
+
+      <% } %>
+
+    </main>
+    
+  </body>
+
+</html>

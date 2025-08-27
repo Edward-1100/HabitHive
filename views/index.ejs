@@ -1,0 +1,30 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="icon" type="image/png" href="/images/honeycomb.png">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  
+  <body>
+    <%- include('partials/nav') %>
+
+    <main class="container">
+      
+      <h1>Welcome</h1>
+
+      <% if (!user) { %>
+        <p>Please <a href="/login">log in</a> or <a href="/register">register</a> to start tracking your habits.</p>
+      <% } else { %>
+        <p>Welcome back, <strong><%= user.username %></strong>.</p>
+        <p><a href="/habits">View habits</a> • <a href="/profile/<%= user.id %>">Your profile</a></p>
+      <% } %>
+    
+    </main>
+  
+  </body>
+
+</html>

@@ -1,0 +1,22 @@
+<nav class="nav">
+  
+  <div class="nav-left">
+    <a class="brand" href="/">Habit Tracker</a>
+  </div>
+
+  <div class="nav-right">
+    <% if (!user) { %>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    <% } else { %>
+      <a href="/">Home</a>
+      <a href="/habits">Habits</a>
+      <a href="/rewards">Rewards</a>
+      <a href="/profile/<%= user.id %>">Profile</a>
+      <a href="/logout">Logout</a>
+    <% } %>
+    
+  </div>
+
+</nav>

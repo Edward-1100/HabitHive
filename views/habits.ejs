@@ -1,0 +1,156 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/png" href="/images/honeycomb.png">
+    <title>Your Habits</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+
+    <%- include('partials/nav') %>
+
+    <main class="container">
+
+      <h1>Your Habits</h1>
+
+      <section class="card">
+
+        <h2>Add a Habit</h2>
+
+        <form id="addHabitForm" class="form" method="POST" action="/habits/add" autocomplete="off">
+
+          <label>
+            Habit type
+            <select id="habitType" name="habitType" required>
+
+              <option value="">Select...</option>
+              <option value="good">Good</option>
+              <option value="bad">Bad</option>
+
+            </select>
+          </label>
+
+          <label id="goodGroup" style="display:none">
+            Pick a common good habit
+            <select id="goodHabits" name="goodHabits">
+
+              <option value="">Select good habit...</option>
+              <option value="Exercise">Exercise</option>
+              <option value="Reading">Reading</option>
+              <option value="Meditation">Meditation</option>
+              <option value="Drink Water">Drink Water</option>
+              <option value="Sleep Early">Sleep Early</option>
+
+            </select>
+          </label>
+
+          <label id="badGroup" style="display:none">
+            Pick a common bad habit
+            <select id="badHabits" name="badHabits">
+
+              <option value="">Select bad habit...</option>
+              <option value="Smoking">Smoking</option>
+              <option value="Eating Junk Food">Eating Junk Food</option>
+              <option value="Staying Up Late">Staying Up Late</option>
+              <option value="Procrastination">Procrastination</option>
+              <option value="Too Much Screen Time">Too Much Screen Time</option>
+
+            </select>
+          </label>
+
+          <label>
+            Or custom habit name (optional) 
+            <input type="text" name="title" id="title" placeholder="e.g. Walk 30 minutes" />
+          </label>
+
+          <!--Pull today's date, set as default-->
+          <label>
+            Start date
+            <input type="date" name="startDate" required />
+          </label>
+
+          <label>
+            End date (optional)
+            <input type="date" name="endDate" />
+          </label>
+
+          <button type="submit">Add Habit</button>
+        </form>
+      </section>
+
+      <section class="card" style="margin-top:1.5rem;">
+        <h2>Manage Habits</h2>
+
+        <% if (!habits || habits.length === 0) { %>
+          <p>No habits yet. Use the form above to add one.</p>
+        <% } else { %>
+
+          <ul class="habit-list">
+
+            <% habits.forEach(habit => { %>
+
+              <li class="habit-item" data-id="<%= habit._id %>">
+
+                <div class="habit-left">
+                  <strong><%= habit.title %></strong>
+                  <div class="muted"><%= habit.type %> • start: <%= habit.startDateStr || '-' %> end: <%= habit.endDateStr || '-' %></div>
+                </div>
+
+                <div class="habit-actions">
+
+                  <button class="btn-toggle" data-id="<%= habit._id %>">
+                    <% if (habit.completedToday) { %>Mark incomplete today<% } else { %>Mark complete today<% } %>
+                  </button>
+
+                  <button class="btn-edit" data-id="<%= habit._id %>">Edit</button>
+
+                  <form class="inline-delete" method="POST" action="/habits/delete/<%= habit._id %>" style="display:inline">
+                    <button type="submit" class="btn-ghost">Delete</button>
+                  </form>
+
+                </div>
+
+                <form class="edit-form" data-id="<%= habit._id %>" method="POST" action="/habits/edit/<%= habit._id %>" style="display:none; margin-top:0.75rem;">
+                  
+                  <label>
+                    Title
+                    <input name="title" type="text" value="<%= habit.title %>">
+                  </label>
+                  
+                  <label>
+                    Start
+                    <input name="startDate" type="date" value="<%= habit.startDateStr %>">
+                  </label>
+                  
+                  <label>
+                    End
+                    <input name="endDate" type="date" value="<%= habit.endDateStr %>">
+                  </label>
+                  
+                  <button type="submit">Save</button>
+                  <button type="button" class="btn-cancel">Cancel</button>
+
+                </form>
+
+              </li>
+
+            <% }) %>
+
+          </ul>
+
+        <% } %>
+
+      </section>
+      
+    </main>
+
+    <script src="/js/habits.js"></script>
+
+  </body>
+
+</html>

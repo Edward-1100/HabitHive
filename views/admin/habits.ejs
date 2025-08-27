@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Admin Habit Panel</title>
+    <link rel="icon" type="image/png" href="/images/honeycomb.png">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+
+  <body>
+
+    <h1>Manage Habits</h1>
+
+    <table border="1" cellpadding="8">
+
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% habits.forEach(habit => { %>
+          <tr>
+
+            <td><%= habit.user.username %> (<%= habit.user.email %>)</td>
+            <td><%= habit.title %></td>
+            <td><%= habit.type %></td>
+            <td><%= habit.startDate ? habit.startDate.toDateString() : '-' %></td>
+            <td><%= habit.endDate ? habit.endDate.toDateString() : '-' %></td>
+            
+            <td>
+              <form action="/admin/habits/delete/<%= habit._id %>" method="POST">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+
+          </tr>
+
+        <% }) %>
+
+      </tbody>
+
+    </table>
+
+  </body>
+
+</html>
