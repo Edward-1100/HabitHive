@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Points Test</title>
+    </head>
+ 
+    <body>
+ 
+        <% if (message) { %>
+            <p><%= message %></p>
+        <% } %>
+ 
+        <% if (error) { %>
+            <p style="color:red"><%= error %></p>
+        <% } %>
+ 
+        <% if (user) { %>
+            <p>Current points: <strong><%= user.points || 0 %></strong></p>
+ 
+            <form method="POST" action="/points-test/deduct">
+            <label>
+                Amount:
+                <input name="amount" type="number" min="1" required>
+            </label>
+            <button type="submit">Deduct</button>
+            </form>
+        <% } else { %>
+            <p>Please <a href="/login">log in</a> to use this page.</p>
+        <% } %>
+ 
+    </body>
+</html>
+ 

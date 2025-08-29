@@ -1,22 +1,39 @@
 <!doctype html>
-
 <html lang="en">
-
   <head>
     <meta charset="utf-8">
-    <title>Rewards</title>
-    <link rel="icon" type="image/png" href="/images/honeycomb.png">
+    <title><%= title %></title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
-
   <body>
     <%- include('partials/nav') %>
 
     <main class="container">
       <h1>Rewards</h1>
-      <p>Placeholder | Redeem points for rewards (coming soon).</p>
+
+      <p>Your points: <span><%= user.points %></span></p>
+
+      <% if (message) { %>
+        <p style="color: green;"><%= message %></p>
+      <% } %>
+      <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+      <% } %>
+
+      <form action="/rewards/deduct" method="POST" style="display:inline;">
+        <input type="hidden" name="amount" value="20">
+        <button type="submit">Redeem a penny (20)</button>
+      </form>
+
+      <form action="/rewards/deduct" method="POST" style="display:inline;">
+        <input type="hidden" name="amount" value="100">
+        <button type="submit">Redeem a cookie (100)</button>
+      </form>
+
+      <form action="/rewards/deduct" method="POST" style="display:inline;">
+        <input type="hidden" name="amount" value="1000">
+        <button type="submit">Redeem a donut (1000)</button>
+      </form>
     </main>
-
   </body>
-
 </html>

@@ -65,7 +65,10 @@ app.use('/', userRoutes);
 app.use('/', habitRoutes);
 app.use('/', adminRoutes);
 app.use('/rewards', rewardsRoutes);
+<<<<<<< HEAD
+=======
 app.use('/leaderboard', leaderboardRoutes);
+>>>>>>> bc75fe8c27765272839fe76584c853dcd669acdb
 
 app.get('/', (req, res) => {
   res.render('index');
