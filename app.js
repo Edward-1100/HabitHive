@@ -7,6 +7,8 @@ const path = require('path');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
+
+const homeRoutes = require('./routes/home');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const rewardsRoutes = require('./routes/rewards');
@@ -62,10 +64,10 @@ app.use(async (req, res, next) => {
 
 app.use('/', authRoutes);
 app.use('/', userRoutes);
+app.use('/', homeRoutes);
 app.use('/', habitRoutes);
 app.use('/', adminRoutes);
 app.use('/rewards', rewardsRoutes);
-
 app.use('/leaderboard', leaderboardRoutes);
 
 

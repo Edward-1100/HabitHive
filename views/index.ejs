@@ -1,31 +1,75 @@
 <!doctype html>
-
 <html lang="en">
-
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Home</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css"/>
   </head>
-  
+
   <body>
     <%- include('partials/nav') %>
 
     <main class="container">
-      
+
+        <br>
+        <br>
+
       <h1>Welcome</h1>
 
       <% if (!user) { %>
         <p>Please <a href="/login">log in</a> or <a href="/register">register</a> to start tracking your habits.</p>
       <% } else { %>
-
+        
         <p>Welcome back, <strong><%= user.username %></strong>.</p>
-        <p><a href="/habits">View habits</a> • <a href="/profile/<%= user.id %>">Your profile</a> • <a href="/leaderboard">See Leaderboard</a><a></a></p>
+
+        <br>
+        <br>
+        <br>
+
+        <section>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h2 style="margin:0">This month</h2>
+            <div class="muted"><%= new Date(year, month).toLocaleString(undefined,{ month: 'long', year: 'numeric' }) %></div>
+          </div>
+
+          <div class="calendar" aria-label="Habit calendar">
+
+            <% calendarDays.forEach(function(day) { %>
+
+              <div class="cal-day <%= day.bucket %>" data-date="<%= day.date %>">
+                <div class="dateNum"><%= Number(day.date.slice(-2)) %></div>
+                <div class="dot"><%= day.completedCount %>/<%= day.total %></div>
+              </div>
+
+            <% }) %>
+
+          </div>
+
+        </section>
+
+        <aside id="dayPanel" aria-hidden="true">
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h3 id="dayPanelTitle">Day</h3>
+            <button id="dayPanelClose" class="btn-ghost">Close</button>
+          </div>
+
+          <div id="dayHabitList"></div>
+
+        </aside>
+
+        <script>
+          window.CALENDAR = <%- JSON.stringify(calendarDays || []) %>;
+        </script>
+
+        <script src="/js/calendar.js"></script>
 
       <% } %>
-    
+
     </main>
-  
+
   </body>
 
 </html>

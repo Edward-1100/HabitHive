@@ -6,12 +6,16 @@ const HabitSchema = new mongoose.Schema({
   type: { type: String, enum: ["good", "bad"], required: true },
   startDate: { type: Date, default: Date.now },
   endDate: { type: Date },
+
   progress: [
     {
-      date: { type: Date, required: true },
+      date: { type: String, required: true },
       completed: { type: Boolean, default: false }
     }
   ]
 }, { timestamps: true });
+
+HabitSchema.index({ user: 1 });
+HabitSchema.index({ "progress.date": 1 });
 
 module.exports = mongoose.model("Habit", HabitSchema);
