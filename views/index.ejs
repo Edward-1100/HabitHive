@@ -5,7 +5,6 @@
   <head>
     <meta charset="utf-8">
     <title>Home</title>
-    <link rel="icon" type="image/png" href="/images/honeycomb.png">
     <link rel="stylesheet" href="/css/style.css">
   </head>
   
@@ -19,8 +18,10 @@
       <% if (!user) { %>
         <p>Please <a href="/login">log in</a> or <a href="/register">register</a> to start tracking your habits.</p>
       <% } else { %>
+
         <p>Welcome back, <strong><%= user.username %></strong>.</p>
-        <p><a href="/habits">View habits</a> • <a href="/profile/<%= user.id %>">Your profile</a></p>
+        <p><a href="/habits">View habits</a> • <a href="/profile/<%= user.id %>">Your profile</a> • <a href="/leaderboard">See Leaderboard</a><a></a></p>
+
       <% } %>
     
     </main>
