@@ -9,8 +9,10 @@ const helmet = require('helmet');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const rewardsRoutes = require('./routes/rewards');
 const habitRoutes = require('./routes/habitRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 const User = require('./models/User');
 
@@ -37,7 +39,7 @@ app.use(session({
   cookie: { httpOnly: true, sameSite: 'lax', maxAge: 1000 * 60 * 60 * 24 * 7 }
 }));
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs');  
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(async (req, res, next) => {
@@ -57,10 +59,13 @@ app.use(async (req, res, next) => {
   }
 });
 
+
 app.use('/', authRoutes);
 app.use('/', userRoutes);
 app.use('/', habitRoutes);
 app.use('/', adminRoutes);
+app.use('/rewards', rewardsRoutes);
+app.use('/leaderboard', leaderboardRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');

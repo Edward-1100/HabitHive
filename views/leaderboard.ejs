@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Leaderboard</title>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+      .leaderboard-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+      .leaderboard-table th, .leaderboard-table td { padding:0.6rem 0.8rem; border-bottom:1px solid rgba(0,0,0,0.06); text-align:left; }
+      .leaderboard-rank { width:64px; font-weight:700; color:var(--brown,#3e2723); }
+      .leaderboard-highlight { background: linear-gradient(90deg, rgba(230,184,0,0.10), rgba(201,154,0,0.05)); }
+      .spacer-row td { height:12px; border:none; background:transparent; }
+    </style>
+
+  </head>
+
+  <body>
+    <%- include('partials/nav') %>
+
+    <main class="container">
+      <h1><%= title || 'Leaderboard' %></h1>
+
+      <table class="leaderboard-table" role="table" aria-label="Leaderboard">
+
+        <thead>
+
+          <tr>
+            <th class="leaderboard-rank">Rank</th>
+            <th>User</th>
+            <th>Points</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <% if (!topUsers || topUsers.length === 0) { %>
+            <tr><td colspan="3">No users yet.</td></tr>
+          <% } else { %>
+
+            <% topUsers.forEach((u, i) => { %>
+              
+              <tr class="<%= (highlightId && String(u._id) === highlightId) ? 'leaderboard-highlight' : '' %>">
+                <td class="leaderboard-rank"><%= i + 1 %></td>
+                <td><a href="/profile/<%= u._id %>"><%= u.username %></a></td>
+                <td><%= u.points || 0 %></td>
+              </tr>
+
+            <% }) %>
+
+          <% } %>
+
+          <% if (currentUser && !inTop) { %>
+            <tr class="spacer-row"><td colspan="3"></td></tr>
+            
+            <tr class="leaderboard-highlight">
+              <td class="leaderboard-rank"><%= userRank %></td>
+              <td><a href="/profile/<%= currentUser._id %>"><%= currentUser.username %></a></td>
+              <td><%= currentUser.points || 0 %></td>
+            </tr>
+
+          <% } %>
+
+        </tbody>
+
+      </table>
+
+    </main>
+
+  </body>
+
+</html>
