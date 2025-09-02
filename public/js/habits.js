@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const id = btn.getAttribute('data-id');
       try {
-        const res = await fetch(`/habits/toggle/${id}`, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' } });
+        const res = await fetch(`/habits/toggle/${id}`, {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}});
         const json = await res.json();
         if (json && json.ok) {
           btn.textContent = json.completed ? 'Mark incomplete today' : 'Mark complete today';
@@ -66,4 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  (function () {
+    const startEl = document.getElementById('startDate');
+    const endEl = document.getElementById('endDate');
+
+    if (startEl && endEl) {
+      function syncMin() {
+        if (startEl.value) endEl.min = startEl.value;
+        else endEl.removeAttribute('min');
+        if (endEl.value && startEl.value && endEl.value < startEl.value) endEl.value = startEl.value;
+      }
+      startEl.addEventListener('change', syncMin);
+      syncMin();
+    }
+  })();
+
 });

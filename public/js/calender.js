@@ -12,7 +12,7 @@
     const d = byDate[date];
     if (!d) return;
 
-    dayTitle.textContent = new Date(date).toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'short', day:'numeric' });
+    dayTitle.textContent = new Date(date).toLocaleDateString(undefined, {weekday:'long', year:'numeric', month:'short', day:'numeric'});
 
     if (!Array.isArray(d.habits) || d.habits.length === 0) {
       dayList.innerHTML = '<div class="muted">No habits scheduled this day.</div>';

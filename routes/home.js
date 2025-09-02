@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Habit = require('../models/Habit');
 const MissedLog = require('../models/MissedLog');
-const { isLoggedIn } = require('../middleware/auth');
+const {isLoggedIn} = require('../middleware/auth');
 
 function toIso(d) {
   const dt = new Date(d);
@@ -32,12 +32,12 @@ router.get('/', async (req, res) => {
     const firstOfMonth = new Date(year, month, 1);
     const lastOfMonth = new Date(year, month + 1, 0);
 
-    const habits = await Habit.find({ user: req.user._id }).lean();
+    const habits = await Habit.find({user: req.user._id}).lean();
 
     const days = [];
     for (let d = 1; d <= lastOfMonth.getDate(); d++) {
       const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      days.push({ date: iso, habits: [] });
+      days.push({date: iso, habits: []});
     }
 
     for (const h of habits) {
@@ -62,9 +62,9 @@ router.get('/', async (req, res) => {
           if (curIso < todayIso && !completed) {
             try {
               await MissedLog.updateOne(
-                { habit: h._id, date: curIso },
-                { $setOnInsert: { user: req.user._id, habit: h._id, date: curIso } },
-                { upsert: true }
+                {habit: h._id, date: curIso},
+                {$setOnInsert: {user: req.user._id, habit: h._id, date: curIso}},
+                {upsert: true}
               );
             } catch (e) {
 
@@ -84,7 +84,6 @@ router.get('/', async (req, res) => {
       else if (completedCount === total) bucket = 'all';
       else bucket = 'partial';
 
-
       d.bucket = bucket;
       d.completedCount = completedCount;
       d.total = total;
@@ -96,7 +95,7 @@ router.get('/', async (req, res) => {
       month,
       year,
       todayIso,
-      habits: habits.map(h => ({ _id: String(h._id), title: h.title }))
+      habits: habits.map(h => ({_id: String(h._id), title: h.title}))
     });
   } catch (err) {
     console.error('Home route error:', err);

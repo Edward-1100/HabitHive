@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 router.get("/", async (req, res) => {
   try {
-    const topUsers = await User.find().sort({ points: -1, username: 1 })
+    const topUsers = await User.find().sort({points: -1, username: 1})
     .limit(10).select("username points").lean();
 
     let currentUser = null;
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
     let userRank = null;
     if (currentUser && !inTop) {
-      userRank = await User.countDocuments({ points: { $gt: currentUser.points } }) + 1;
+      userRank = await User.countDocuments({points: {$gt: currentUser.points}}) + 1;
     }
 
     res.render("leaderboard", {

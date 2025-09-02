@@ -10,7 +10,7 @@ const helmet = require('helmet');
 
 const homeRoutes = require('./routes/home');
 const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
+const profileRoutes = require('./routes/profile');
 const rewardsRoutes = require('./routes/rewards');
 const habitRoutes = require('./routes/habitRoutes');
 const adminRoutes = require('./routes/adminRoutes');
@@ -24,12 +24,12 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected'))
-  .catch(err => { console.error('Mongo error', err); process.exit(1); 
+  .catch(err => {console.error('Mongo error', err); process.exit(1); 
 });
 
 app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -37,8 +37,8 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'dev-secret',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: { httpOnly: true, sameSite: 'lax', maxAge: 1000 * 60 * 60 * 24 * 7 }
+  store: MongoStore.create({mongoUrl: process.env.MONGO_URI}),
+  cookie: {httpOnly: true, sameSite: 'lax', maxAge: 1000 * 60 * 60 * 24 * 7}
 }));
 
 app.set('view engine', 'ejs');  
@@ -63,11 +63,11 @@ app.use(async (req, res, next) => {
 
 
 app.use('/', authRoutes);
-app.use('/', userRoutes);
 app.use('/', homeRoutes);
 app.use('/', habitRoutes);
 app.use('/', adminRoutes);
 app.use('/rewards', rewardsRoutes);
+app.use('/profile', profileRoutes);
 app.use('/leaderboard', leaderboardRoutes);
 
 

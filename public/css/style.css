@@ -658,3 +658,89 @@ footer {
 .leaderboard-rank { width:64px; font-weight:700; color:var(--dark, #3e2723); }
 .leaderboard-highlight { background: linear-gradient(90deg, rgba(230,184,0,0.10), rgba(201,154,0,0.05)); }
 .spacer-row td { height:12px; border:none; background:transparent; }
+
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.admin-table th, .admin-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eee; text-align: left; }
+.admin-table th { font-weight: 700; color: #333; }
+.points-input { width: 6.5rem; padding: 0.35rem; border-radius: 6px; border:1px solid #ddd; }
+.small-btn { padding: 0.4rem 0.6rem; border-radius:6px; cursor:pointer; border:0; background:#E6B800; color:#111; font-weight:600; }
+.muted { color: #6b6b6b; font-size:0.95rem; }
+form.inline { display:inline; margin:0; }
+
+.card { background:#fff; border-radius:12px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+.profile-edit { display:flex; gap:16px; align-items:flex-start; }
+.avatar-preview { width:110px; height:110px; border-radius:50%; object-fit:cover; border:3px solid #efe2b3; background:#f6f6f6; }
+.form-inline { display:flex; flex-direction:column; gap:10px; width:100%; }
+.muted { color:#666; font-size:0.95rem; }
+.btn-row { display:flex; gap:8px; margin-top:12px; }
+.small { font-size:0.9rem; color:#666; }
+input[type="file"] { padding:6px 0; }
+
+.profile-card { background:#fff; padding:20px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.06); margin-bottom:24px; }
+.profile-header { display:flex; align-items:center; gap:16px; }
+.profile-avatar-img { width:96px; height:96px; border-radius:50%; object-fit:cover; border:3px solid #efe2b3; background:#f6f6f6; }
+.profile-meta { flex:1; }
+.profile-meta h2 { margin:0; font-size:1.6rem; }
+.profile-meta .muted { color:#666; font-size:0.9rem; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:16px; margin-top:16px; }
+.stat-box { background:#fafafa; padding:12px; border-radius:10px; text-align:center; }
+.stat-box h3 { margin:0; font-size:1.4rem; color:#3e2723; }
+.stat-box span { font-size:0.85rem; color:#666; }
+
+.section { margin-top:32px; }
+.section h3 { margin-bottom:12px; font-size:1.2rem; border-bottom:1px solid #eee; padding-bottom:4px; }
+
+.activity-list { list-style:none; padding:0; margin:0; }
+.activity-list li { padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:0.95rem; display:flex; justify-content:space-between; align-items:center; }
+.activity-list li:last-child { border-bottom:none; }
+
+.status { font-weight:700; padding:4px 8px; border-radius:6px; font-size:0.9rem; }
+.status-completed { color:#155724; background:#d4edda; border:1px solid #c3e6cb; }
+.status-missed { color:#721c24; background:#f8d7da; border:1px solid #f5c6cb; }
+
+.btn { background:#ffb300; border:none; color:#fff; padding:10px 14px; border-radius:8px; cursor:pointer; transition:background 0.2s; text-decoration:none; display:inline-block; }
+.btn:hover { background:#e5a100; }
+.meta-small { color:#666; font-size:0.9rem; }
+
+.points-box {
+  display:inline-block;
+  background: linear-gradient(90deg, #FFF8E0, #FFF1CC);
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.04);
+  font-weight: 800;
+  color: var(--dark, #3e2723);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+}
+
+.rewards-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.reward-card {
+  background: var(--card, #fff);
+  padding: 14px;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary, #FFD700);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.reward-title { font-weight:700; color:var(--dark,#3e2723); }
+.reward-price { color:var(--muted,#555); font-weight:700; }
+
+.reward-actions { margin-top:8px; display:flex; gap:8px; align-items:center; }
+.small-muted { font-size:0.9rem; color:var(--muted,#666); }
+
+.center-row { display:flex; gap:8px; align-items:center; }
+.top-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:8px; }
+
+@media (max-width:600px) {
+  .top-row { flex-direction:column; align-items:flex-start; gap:8px; }
+}

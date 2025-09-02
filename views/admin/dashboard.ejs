@@ -8,17 +8,6 @@
     <link rel="icon" type="image/png" href="/images/honeycomb.png">
     <title>Admin Panel</title>
     <link rel="stylesheet" href="/css/style.css" />
-
-    <style>
-      .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-      .admin-table th, .admin-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eee; text-align: left; }
-      .admin-table th { font-weight: 700; color: #333; }
-      .points-input { width: 6.5rem; padding: 0.35rem; border-radius: 6px; border:1px solid #ddd; }
-      .small-btn { padding: 0.4rem 0.6rem; border-radius:6px; cursor:pointer; border:0; background:#E6B800; color:#111; font-weight:600; }
-      .muted { color: #6b6b6b; font-size:0.95rem; }
-      form.inline { display:inline; margin:0; }
-    </style>
-    
   </head>
 
   <body>
@@ -28,7 +17,7 @@
     <main class="container">
       <h1>Admin Panel</h1>
 
-      <p class="muted">General Admin Panel. <a href="https://www.w3schools.com">Habit Panel</a>  |  <a href="Moderation Panel">Moderation Panel</a></p>
+      <p class="muted">General Admin Panel. <a href="/admin/habits">Habit Panel</a>  |  <a href="Moderation Panel">Moderation Panel</a></p>
 
       <% if (!users || users.length === 0) { %>
         <p>No users found.</p>

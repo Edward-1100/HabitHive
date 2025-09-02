@@ -1,11 +1,11 @@
 <!doctype html>
 
 <html lang="en">
-
+  
   <head>
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="/images/honeycomb.png">
-    <title><%= user.username %>'s Profile</title>
+    <title><%= user && user.username ? user.username : 'Profile' %>'s Profile</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
 
@@ -13,10 +13,96 @@
     <%- include('partials/nav') %>
 
     <main class="container">
-      <h1>Coming Soon</h1>
 
-      <p>Username: <%= user.username %></p>
-      <p>Points: <%= user.points %></p>
+      <div class="profile-card">
+
+        <div class="profile-header">
+
+          <div>
+            <img
+              src="<%= user.profileImage && user.profileImage.length ? user.profileImage : '/images/honeycomb.png' %>"
+              alt="<%= user.username %>'s avatar"
+              class="profile-avatar-img"
+            >
+          </div>
+
+          <div class="profile-meta">
+            <h2><%= user.username %></h2>
+            <div class="muted">Joined: <%= (new Date(user.createdAt)).toDateString() %></div>
+            <div class="muted">Role: <%= user.isAdmin ? "Admin" : "User" %></div>
+          </div>
+
+        </div>
+
+        <div class="stats-grid">
+
+          <div class="stat-box">
+            <h3><%= typeof user.points === 'number' ? user.points : 0 %></h3>
+            <span>Points</span>
+          </div>
+
+          <div class="stat-box">
+            <h3><%= typeof habitsCount === 'number' ? habitsCount : 0 %></h3>
+            <span>Total Habits</span>
+          </div>
+
+          <div class="stat-box">
+            <h3><%= typeof completedCount === 'number' ? completedCount : 0 %></h3>
+            <span>Completed</span>
+          </div>
+
+          <div class="stat-box">
+            <h3><%= typeof streak === 'number' ? streak : 0 %></h3>
+            <span>Current Streak</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="section">
+
+        <h3>Recent Activity</h3>
+
+        <% if (activities && activities.length > 0) { %>
+
+          <ul class="activity-list">
+
+            <% activities.forEach(a => { %>
+
+              <li>
+                <div>
+                  <div class="meta-small"><%= (a.date instanceof Date) ? a.date.toDateString() : (new Date(a.date)).toDateString() %></div>
+                  <div><strong><%= a.habitTitle %></strong></div>
+                </div>
+
+                <div>
+                  <% if (a.type === 'completed') { %>
+                    <span class="status status-completed">Completed</span>
+                  <% } else { %>
+                    <span class="status status-missed">Missed</span>
+                  <% } %>
+                </div>
+              </li>
+
+            <% }) %>
+
+          </ul>
+
+        <% } else { %>
+          <p class="muted">No recent activity.</p>
+        <% } %>
+
+      </div>
+
+      <div class="section">
+
+        <h3>Actions</h3>
+        <a href="/rewards" class="btn">View Rewards</a>
+        <a href="/habits" class="btn">Manage Habits</a>
+        <a href="/profile/<%= user._id %>/edit" class="btn">Edit Profile</a>
+
+      </div>
 
     </main>
 

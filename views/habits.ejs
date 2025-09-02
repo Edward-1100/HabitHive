@@ -3,11 +3,11 @@
 <html lang="en">
 
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <link rel="icon" type="image/png" href="/images/honeycomb.png">
     <title>Your Habits</title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style.css"/>
   </head>
 
   <body>
@@ -65,18 +65,17 @@
 
           <label>
             Or custom habit name (optional) 
-            <input type="text" name="title" id="title" placeholder="e.g. Walk 30 minutes" />
+            <input type="text" name="title" id="title" placeholder="e.g. Walk 30 minutes"/>
           </label>
 
-          <!--Pull today's date, set as default-->
           <label>
             Start date
-            <input type="date" name="startDate" required />
+            <input type="date" id="startDate" name="startDate" required value="<%= new Date().toISOString().slice(0,10) %>"/>
           </label>
 
           <label>
             End date (optional)
-            <input type="date" name="endDate" />
+            <input type="date" id="endDate" name="endDate"/>
           </label>
 
           <button type="submit">Add Habit</button>

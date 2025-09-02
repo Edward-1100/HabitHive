@@ -8,4 +8,4 @@ function ensureAdmin(req, res, next) {
   return res.status(403).send('Forbidden - Admins Only');
 }
 
-module.exports = { ensureLoggedIn, ensureAdmin };
+module.exports = {ensureLoggedIn, ensureAdmin, isLoggedIn: ensureLoggedIn, isAdmin: ensureAdmin};

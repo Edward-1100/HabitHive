@@ -1,0 +1,71 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+
+  <body>
+    <%- include('partials/nav') %>
+
+    <main class="container">
+      <h1>Edit Profile</h1>
+
+      <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+        <div class="card">
+
+            <form action="/profile/<%= user._id %>/edit" method="POST" enctype="multipart/form-data" class="profile-edit">
+                
+                <div>
+                <img id="avatarPreview" src="<%= user.profileImage && user.profileImage.length ? user.profileImage : '/images/honeycomb.png' %>" alt="avatar" class="avatar-preview">
+                </div>
+
+                <div class="form-inline">
+                <label>
+                    Change avatar
+                    <input type="file" name="avatar" id="avatarInput" accept="image/png,image/jpeg">
+                </label>
+
+                <label>
+                    Email
+                    <input type="email" name="email" value="<%= user.email || '' %>">
+                </label>
+
+                <div class="btn-row">
+                    <button type="submit" class="btn">Save</button>
+                    <a href="/profile/<%= user._id %>" class="btn-ghost">Cancel</a>
+                </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <script>
+      (function () {
+        const input = document.getElementById('avatarInput');
+        const preview = document.getElementById('avatarPreview');
+        if (!input || !preview) return;
+        input.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          if (!file.type.startsWith('image/')) return;
+          const reader = new FileReader();
+          reader.onload = () => { preview.src = reader.result; };
+          reader.readAsDataURL(file);
+        });
+      })();
+    </script>
+
+  </body>
+
+</html>

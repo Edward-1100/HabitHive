@@ -1,39 +1,114 @@
 <!doctype html>
+
 <html lang="en">
+  
   <head>
     <meta charset="utf-8">
-    <title><%= title %></title>
+    <title>Rewards</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
+
   <body>
+
     <%- include('partials/nav') %>
 
     <main class="container">
-      <h1>Rewards</h1>
 
-      <p>Your points: <span><%= user.points %></span></p>
+      <div class="top-row">
+
+        <div>
+          <h1>Rewards</h1>
+          <div class="muted">Use your points to redeem rewards.</div>
+        </div>
+
+        <div class="points-box" id="pointsBox" aria-live="polite">
+          Points: <span id="pointsValue"><%= user && typeof user.points === 'number' ? user.points : 0 %></span>
+        </div>
+
+      </div>
+
+      <div style="height:8px"></div>
 
       <% if (message) { %>
-        <p style="color: green;"><%= message %></p>
+        <div class="alert"><%= message %></div>
       <% } %>
       <% if (error) { %>
-        <p style="color: red;"><%= error %></p>
+        <div class="alert alert-error"><%= error %></div>
       <% } %>
 
-      <form action="/rewards/deduct" method="POST" style="display:inline;">
-        <input type="hidden" name="amount" value="20">
-        <button type="submit">Redeem a penny (20)</button>
-      </form>
+      <section style="margin-top:12px;">
 
-      <form action="/rewards/deduct" method="POST" style="display:inline;">
-        <input type="hidden" name="amount" value="100">
-        <button type="submit">Redeem a cookie (100)</button>
-      </form>
+        <h2 style="margin:0 0 8px 0">Available rewards</h2>
 
-      <form action="/rewards/deduct" method="POST" style="display:inline;">
-        <input type="hidden" name="amount" value="1000">
-        <button type="submit">Redeem a donut (1000)</button>
-      </form>
+        <div class="rewards-grid" role="list">
+
+          <% 
+            const rewards = [
+              { id: 'penny', title: 'Penny', price: 20 },
+              { id: 'cookie', title: 'Cookie', price: 100 },
+              { id: 'donut', title: 'Donut', price: 1000 }
+            ];
+            const pts = user && typeof user.points === 'number' ? user.points : 0;
+          %>
+
+          <% rewards.forEach(r => { %>
+            
+            <div class="reward-card" role="listitem" aria-label="<%= r.title %>">
+
+              <div style="display:flex;justify-content:space-between;align-items:start;">
+
+                <div>
+                  <div class="reward-title"><%= r.title %></div>
+                </div>
+
+                <div style="text-align:right;">
+                  <div class="reward-price"><%= r.price %> pts</div>
+                </div>
+
+              </div>
+
+              <div class="reward-actions">
+
+                <form action="/rewards/deduct" method="POST" style="margin:0;">
+
+                  <input type="hidden" name="amount" value="<%= r.price %>">
+
+                  <button type="submit" class="btn" data-price="<%= r.price %>" <%= pts < r.price ? 'disabled' : '' %>>
+                    Redeem
+                  </button>
+
+                </form>
+
+                <div class="small-muted" style="margin-left:auto;">
+                  <%= pts >= r.price ? 'Available' : 'Not enough points' %>
+                </div>
+
+              </div>
+
+            </div>
+
+          <% }) %>
+
+        </div>
+
+      </section>
+
     </main>
+
+    <script>
+
+      (function(){
+
+        const pts = Number(document.getElementById('pointsValue').textContent || '0');
+        document.querySelectorAll('button[data-price]').forEach(btn => {
+          const price = Number(btn.getAttribute('data-price') || 0);
+          if (price > pts) btn.disabled = true;
+        });
+
+      })();
+
+    </script>
+
   </body>
+
 </html>
