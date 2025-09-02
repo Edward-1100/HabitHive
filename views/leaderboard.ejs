@@ -6,53 +6,108 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Leaderboard</title>
-
+    <link rel="icon" href="\images\honeycomb.png">
     <link rel="stylesheet" href="/css/style.css" />
   </head>
 
   <body>
     <%- include('partials/nav') %>
 
-    <main class="container">
-      <h1><%= title || 'Leaderboard' %></h1>
+    <main class="container leaderboard-wrap">
+
+      <div class="leaderboard-header">
+
+        <div>
+          <h1 style="margin:0;">Leaderboard</h1>
+          <div class="leaderboard-sub">Top users by points - top 10 shown</div>
+        </div>
+
+      </div>
 
       <table class="leaderboard-table" role="table" aria-label="Leaderboard">
-
         <thead>
-
           <tr>
             <th class="leaderboard-rank">Rank</th>
             <th>User</th>
-            <th>Points</th>
+            <th class="points-cell">Points</th>
           </tr>
-
         </thead>
 
         <tbody>
+          <% 
+            const top = Array.isArray(topUsers) ? topUsers : [];
+            const current = currentUser || null;
+            const highlightId = current ? String(current._id || current.id) : null;
+            const inTop = highlightId ? top.some(u => String(u._id || u.id) === highlightId) : false;
+          %>
 
-          <% if (!topUsers || topUsers.length === 0) { %>
+          <% if (top.length === 0) { %>
             <tr><td colspan="3">No users yet.</td></tr>
           <% } else { %>
 
-            <% topUsers.forEach((u, i) => { %>
-              
-              <tr class="<%= (highlightId && String(u._id) === highlightId) ? 'leaderboard-highlight' : '' %>">
-                <td class="leaderboard-rank"><%= i + 1 %></td>
-                <td><a href="/profile/<%= u._id %>"><%= u.username %></a></td>
-                <td><%= u.points || 0 %></td>
+            <% top.forEach(function(u, idx) { 
+                 const rank = idx + 1;
+                 const uId = String(u._id || u.id);
+                 const isCurrent = (highlightId && uId === highlightId);
+            %>
+            
+              <tr class="<%= isCurrent ? 'leaderboard-highlight' : '' %>">
+
+                <td class="leaderboard-rank">
+                  <% if (rank === 1) { %>
+                    <span class="rank-badge rank-1">1</span>
+                  <% } else if (rank === 2) { %>
+                    <span class="rank-badge rank-2">2</span>
+                  <% } else if (rank === 3) { %>
+                    <span class="rank-badge rank-3">3</span>
+                  <% } else { %>
+                    <span><%= rank %></span>
+                  <% } %>
+
+                </td>
+
+                <td>
+                  <div class="leaderboard-user">
+                    <img class="avatar-sm" src="<%= (u.profileImage && u.profileImage.length) ? u.profileImage : '/images/honeycomb.png' %>" alt="<%= u.username %>'s avatar" onerror="this.src='/images/honeycomb.png'">
+                    
+                    <div>
+                      <a href="/profile/<%= u._id %>"><strong><%= u.username %></strong></a>
+                      <div class="muted" style="font-size:0.85rem;"><%= u.email ? u.email : '' %></div>
+                    </div>
+
+                  </div>
+
+                </td>
+
+                <td class="points-cell"><%= (typeof u.points === 'number') ? u.points : (u.points || 0) %></td>
               </tr>
 
             <% }) %>
 
           <% } %>
 
-          <% if (currentUser && !inTop) { %>
+          <% if (current && !inTop) { %>
             <tr class="spacer-row"><td colspan="3"></td></tr>
             
             <tr class="leaderboard-highlight">
-              <td class="leaderboard-rank"><%= userRank %></td>
-              <td><a href="/profile/<%= currentUser._id %>"><%= currentUser.username %></a></td>
-              <td><%= currentUser.points || 0 %></td>
+              <td class="leaderboard-rank"><span class="rank-badge"><%= userRank || '-' %></span></td>
+
+              <td>
+
+                <div class="leaderboard-user">
+                  <img class="avatar-sm" src="<%= (current.profileImage && current.profileImage.length) ? current.profileImage : '/images/honeycomb.png' %>" alt="<%= current.username %>'s avatar" onerror="this.src='/images/honeycomb.png'">
+                  
+                  <div>
+                    <a href="/profile/<%= current._id %>"><strong><%= current.username %></strong></a>
+                    <div class="muted" style="font-size:0.85rem;">Your rank</div>
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td class="points-cell"><%= (typeof current.points === 'number') ? current.points : (current.points || 0) %></td>
+
             </tr>
 
           <% } %>

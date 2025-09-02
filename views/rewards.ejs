@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>Rewards</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="\images\honeycomb.png">
   </head>
 
   <body>
@@ -42,6 +43,7 @@
 
         <div class="rewards-grid" role="list">
 
+          <!--Add/Change Rewars Here-->
           <% 
             const rewards = [
               { id: 'penny', title: 'Penny', price: 20 },
@@ -69,11 +71,11 @@
 
               <div class="reward-actions">
 
-                <form action="/rewards/deduct" method="POST" style="margin:0;">
+                <form class="redeemForm" action="/rewards/deduct" method="POST" style="margin:0;">
 
                   <input type="hidden" name="amount" value="<%= r.price %>">
 
-                  <button type="submit" class="btn" data-price="<%= r.price %>" <%= pts < r.price ? 'disabled' : '' %>>
+                  <button type="submit" class="btn redeemBtn" data-price="<%= r.price %>" <%= pts < r.price ? 'disabled' : '' %>>
                     Redeem
                   </button>
 
@@ -95,19 +97,7 @@
 
     </main>
 
-    <script>
-
-      (function(){
-
-        const pts = Number(document.getElementById('pointsValue').textContent || '0');
-        document.querySelectorAll('button[data-price]').forEach(btn => {
-          const price = Number(btn.getAttribute('data-price') || 0);
-          if (price > pts) btn.disabled = true;
-        });
-
-      })();
-
-    </script>
+    <script src="/js/rewards.js" defer></script>
 
   </body>
 
