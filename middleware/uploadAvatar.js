@@ -4,13 +4,11 @@ const crypto = require('crypto');
 const sharp = require('sharp');
 const fs = require('fs');
 const mongoose = require('mongoose');
-const { ObjectId, GridFSBucket } = require('mongodb');
 
 const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'avatars');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, {recursive: true});
 
 const storage = multer.memoryStorage();
-
 const fileFilter = (req, file, cb) => {
   const allowed = /jpeg|jpg|png|gif/;
   const ext = path.extname(file.originalname || '').toLowerCase();
@@ -18,14 +16,19 @@ const fileFilter = (req, file, cb) => {
   const extOk = allowed.test(ext);
   cb(null, mimeOk && extOk);
 };
-
 const limits = {fileSize: 8 * 1024 * 1024};
 const upload = multer({storage, fileFilter, limits});
 
-async function saveToGridFS(buffer, filename, mimeType) {
+function isObjectIdString(s) {
+  if (!s || typeof s !== 'string') return false;
+  return /^[a-fA-F0-9]{24}$/.test(s);
+}
+
+async function saveToFS(buffer, filename, mimeType) {
   const db = mongoose.connection.db;
   if (!db) throw new Error('MongoDB not available');
-  const bucket = new GridFSBucket(db, {bucketName: 'avatars'});
+  const {FSBucket, ObjectId} = mongoose.mongo;
+  const bucket = new FSBucket(db, {bucketName: 'avatars'});
   const fileId = new ObjectId();
   return new Promise((resolve, reject) => {
     const uploadStream = bucket.openUploadStreamWithId(fileId, filename, {contentType: mimeType});
@@ -35,16 +38,16 @@ async function saveToGridFS(buffer, filename, mimeType) {
   });
 }
 
-async function deleteFromGridFS(id) {
-  if (!id) return;
+async function deleteFromFS(id) {
+  if (!id || !isObjectIdString(id)) return;
   try {
     const db = mongoose.connection.db;
     if (!db) return;
-    const bucket = new GridFSBucket(db, {bucketName: 'avatars'});
-    const objId = new ObjectId(id);
-    await bucket.delete(objId);
+    const {FSBucket, ObjectId} = mongoose.mongo;
+    const bucket = new FSBucket(db, {bucketName: 'avatars'});
+    await bucket.delete(new ObjectId(id));
   } catch (err) {
-    console.warn('deleteFromGridFS error (ignored):', err.message || err);
+    console.warn('deleteFromFS error (ignored):', err.message || err);
   }
 }
 
@@ -58,7 +61,7 @@ async function processAvatar(buffer, filename) {
   try {
     const db = mongoose.connection.db;
     if (db) {
-      const fileId = await saveToGridFS(resized, filename, 'image/png');
+      const fileId = await saveToFS(resized, filename, 'image/png');
       return `/uploads/avatars/${fileId}`;
     }
   } catch (err) {
@@ -70,4 +73,4 @@ async function processAvatar(buffer, filename) {
   return `/uploads/avatars/${filename}`;
 }
 
-module.exports = {upload, processAvatar, uploadDir, deleteFromGridFS};
+module.exports = { upload, processAvatar, uploadDir, deleteFromFS };

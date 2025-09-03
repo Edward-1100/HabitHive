@@ -14,7 +14,7 @@ function normalizePublicPath(p) {
 router.get("/", async (req, res) => {
   try {
     const topUsersRaw = await User.find()
-      .sort({ points: -1 })
+      .sort({points: -1})
       .limit(10)
       .select("username points profileImage")
       .lean();
