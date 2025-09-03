@@ -24,11 +24,11 @@ function isObjectIdString(s) {
   return /^[a-fA-F0-9]{24}$/.test(s);
 }
 
-async function saveToFS(buffer, filename, mimeType) {
+async function saveToGridFS(buffer, filename, mimeType) {
   const db = mongoose.connection.db;
   if (!db) throw new Error('MongoDB not available');
-  const {FSBucket, ObjectId} = mongoose.mongo;
-  const bucket = new FSBucket(db, {bucketName: 'avatars'});
+  const {GridFSBucket, ObjectId} = mongoose.mongo;
+  const bucket = new GridFSBucket(db, {bucketName: 'avatars'});
   const fileId = new ObjectId();
   return new Promise((resolve, reject) => {
     const uploadStream = bucket.openUploadStreamWithId(fileId, filename, {contentType: mimeType});
@@ -38,16 +38,16 @@ async function saveToFS(buffer, filename, mimeType) {
   });
 }
 
-async function deleteFromFS(id) {
+async function deleteFromGridFS(id) {
   if (!id || !isObjectIdString(id)) return;
   try {
     const db = mongoose.connection.db;
     if (!db) return;
-    const {FSBucket, ObjectId} = mongoose.mongo;
-    const bucket = new FSBucket(db, {bucketName: 'avatars'});
+    const {GridFSBucket, ObjectId} = mongoose.mongo;
+    const bucket = new GridFSBucket(db, {bucketName: 'avatars'});
     await bucket.delete(new ObjectId(id));
   } catch (err) {
-    console.warn('deleteFromFS error (ignored):', err.message || err);
+    console.warn('deleteFromGridFS error (ignored):', err.message || err);
   }
 }
 
@@ -61,7 +61,7 @@ async function processAvatar(buffer, filename) {
   try {
     const db = mongoose.connection.db;
     if (db) {
-      const fileId = await saveToFS(resized, filename, 'image/png');
+      const fileId = await saveToGridFS(resized, filename, 'image/png');
       return `/uploads/avatars/${fileId}`;
     }
   } catch (err) {
@@ -73,4 +73,4 @@ async function processAvatar(buffer, filename) {
   return `/uploads/avatars/${filename}`;
 }
 
-module.exports = { upload, processAvatar, uploadDir, deleteFromFS };
+module.exports = { upload, processAvatar, uploadDir, deleteFromGridFS };
