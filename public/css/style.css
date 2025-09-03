@@ -505,7 +505,7 @@ footer {
 	height: 30px;
 	background-color: var(--primary);
 	border-radius: 50%;
-	opacity: 0.7;
+	opacity: 0.45;
 	animation: fly 15s infinite linear;
 }
 
@@ -526,7 +526,7 @@ footer {
 	right: 5px;
 }
 
-.bee.wings {
+.bee .wings {
 	position: absolute;
 	width: 10px;
 	height: 10px;
@@ -536,6 +536,13 @@ footer {
 	left: 10px;
 	animation: flap 0.5s infinite linear;
 }
+
+#bee-layer {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1; 
+}
+
 
 /* ChatGPT helped me get keyframes to work as intended */
 @keyframes fly {
