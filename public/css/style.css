@@ -505,7 +505,7 @@ footer {
 	height: 30px;
 	background-color: var(--primary);
 	border-radius: 50%;
-	opacity: 0.45;
+	opacity: 0.7;
 	animation: fly 15s infinite linear;
 }
 
