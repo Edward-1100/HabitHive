@@ -17,6 +17,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const leaderboardRoutes = require('./routes/leaderboard');
 
 const User = require('./models/User');
+const uploadRoutes = require('./routes/uploads');
 
 const app = express();
 
@@ -70,13 +71,14 @@ app.use('/rewards', rewardsRoutes);
 app.use('/profile', profileRoutes);
 app.use('/leaderboard', leaderboardRoutes);
 
+app.use('/', uploadRoutes);
 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
 app.use((req, res) => {
-  res.status(404).render('404', { path: req.path });
+  res.status(404).render('404', {path: req.path});
 });
 
 app.use((err, req, res, next) => {

@@ -38,8 +38,18 @@ async function saveToGridFS(buffer, filename, mimeType) {
   });
 }
 
-async function deleteFromGridFS(id) {
-  if (!id || !isObjectIdString(id)) return;
+function extractPossibleId(s) {
+  if (!s || typeof s !== 'string') return null;
+  const last = s.split('/').pop();
+  const maybe = last.split('.')[0];
+  if (/^[a-fA-F0-9]{24}$/.test(maybe)) return maybe;
+  if (/^[a-fA-F0-9]{24}$/.test(last)) return last;
+  return null;
+}
+
+async function deleteFromGridFS(idOrPath) {
+  const id = extractPossibleId(idOrPath);
+  if (!id) return;
   try {
     const db = mongoose.connection.db;
     if (!db) return;
@@ -73,4 +83,4 @@ async function processAvatar(buffer, filename) {
   return `/uploads/avatars/${filename}`;
 }
 
-module.exports = { upload, processAvatar, uploadDir, deleteFromGridFS };
+module.exports = {upload, processAvatar, uploadDir, deleteFromGridFS};
