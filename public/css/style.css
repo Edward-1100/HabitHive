@@ -503,7 +503,7 @@ footer {
 	position: absolute;
 	width: 30px;
 	height: 30px;
-	background-color: var(--primary);
+	background-color: var(--dark);
 	border-radius: 50%;
 	opacity: 0.7;
 	animation: fly 15s infinite linear;
