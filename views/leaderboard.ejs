@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Leaderboard</title>
-    <link rel="icon" href="\images\honeycomb.png">
+    <link rel="icon" href="/images/honeycomb.png">
     <link rel="stylesheet" href="/css/style.css" />
   </head>
 
@@ -19,7 +19,14 @@
 
         <div>
           <h1 style="margin:0;">Leaderboard</h1>
-          <div class="leaderboard-sub">Top users by points - top 10 shown</div>
+          <div class="leaderboard-sub">Top users by <strong><%= (mode === 'streak') ? 'streak' : 'points' %></strong> - top 10 shown</div>
+        </div>
+
+        <div style="margin-left:auto;">
+          <div class="mode-toggle" role="tablist" aria-label="Leaderboard mode">
+            <a href="/leaderboard?mode=points" class="<%= (mode === 'points') ? 'mode-active' : '' %>">Points</a>
+            <a href="/leaderboard?mode=streak" class="<%= (mode === 'streak') ? 'mode-active' : '' %>">Streaks</a>
+          </div>
         </div>
 
       </div>
@@ -29,7 +36,7 @@
           <tr>
             <th class="leaderboard-rank">Rank</th>
             <th>User</th>
-            <th class="points-cell">Points</th>
+            <th class="points-cell"><%= (mode === 'streak') ? 'Streak' : 'Points' %></th>
           </tr>
         </thead>
 
@@ -63,7 +70,6 @@
                   <% } else { %>
                     <span><%= rank %></span>
                   <% } %>
-
                 </td>
 
                 <td>
@@ -79,7 +85,13 @@
 
                 </td>
 
-                <td class="points-cell"><%= (typeof u.points === 'number') ? u.points : (u.points || 0) %></td>
+                <td class="points-cell">
+                  <% if (mode === 'streak') { %>
+                    <%= typeof u.streak === 'number' ? u.streak : 0 %>
+                  <% } else { %>
+                    <%= (typeof u.points === 'number') ? u.points : (u.points || 0) %>
+                  <% } %>
+                </td>
               </tr>
 
             <% }) %>
@@ -106,7 +118,13 @@
 
               </td>
 
-              <td class="points-cell"><%= (typeof current.points === 'number') ? current.points : (current.points || 0) %></td>
+              <td class="points-cell">
+                <% if (mode === 'streak') { %>
+                  <%= typeof current.streak === 'number' ? current.streak : 0 %>
+                <% } else { %>
+                  <%= (typeof current.points === 'number') ? current.points : (current.points || 0) %>
+                <% } %>
+              </td>
 
             </tr>
 

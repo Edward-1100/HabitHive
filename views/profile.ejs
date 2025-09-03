@@ -6,7 +6,6 @@
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="/images/honeycomb.png">
     <title><%= user && user.username ? user.username : 'Profile' %>'s Profile</title>
-    <link rel="icon" href="\images\honeycomb.png">
     <link rel="stylesheet" href="/css/style.css">
   </head>
 
@@ -65,44 +64,30 @@
 
         <h3>Recent Activity</h3>
 
-        <% if (activities && activities.length > 0) { %>
+        <div style="margin-top:12px; display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <div class="muted">Last 7 days</div>
+          <div class="muted">Today: <strong><%= new Date().toDateString() %></strong></div>
+        </div>
 
-          <ul class="activity-list">
-
-            <% activities.forEach(a => { %>
-
-              <li>
-                <div>
-                  <div class="meta-small"><%= (a.date instanceof Date) ? a.date.toDateString() : (new Date(a.date)).toDateString() %></div>
-                  <div><strong><%= a.habitTitle %></strong></div>
-                </div>
-
-                <div>
-                  <% if (a.type === 'completed') { %>
-                    <span class="status status-completed">Completed</span>
-                  <% } else { %>
-                    <span class="status status-missed">Missed</span>
-                  <% } %>
-                </div>
-              </li>
-
+        <div class="calendar" aria-label="Recent 7 days">
+          <% if (recentDays && recentDays.length) { %>
+            <% recentDays.forEach(function(day) { %>
+              <div class="cal-day <%= day.bucket %>" data-date="<%= day.date %>">
+                <div class="dateNum"><%= Number(day.date.slice(-2)) %></div>
+                <div class="dot"><%= day.completedCount %>/<%= day.total %></div>
+              </div>
             <% }) %>
+          <% } else { %>
+            <p class="muted">No data for recent days.</p>
+          <% } %>
+        </div>
 
-          </ul>
-
-        <% } else { %>
-          <p class="muted">No recent activity.</p>
-        <% } %>
-
-      </div>
 
       <div class="section">
-
         <h3>Actions</h3>
         <a href="/rewards" class="btn">View Rewards</a>
         <a href="/habits" class="btn">Manage Habits</a>
         <a href="/profile/<%= user._id %>/edit" class="btn">Edit Profile</a>
-
       </div>
 
     </main>
